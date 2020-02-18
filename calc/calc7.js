@@ -45,14 +45,14 @@ function writeNumbers (num) {
         fontReset();
     } 
     
-    if (calc.displayValue.length <= 18) {
+    //if (calc.displayValue.length <= 18) {
         calc.displayValue = calc.displayValue.concat(num);  
-    }
+    //}
 
 
     display(calc.displayValue);
 
-    while(view.scrollWidth> view.offsetWidth) {  
+    while(view.scrollWidth > view.offsetWidth || view.scrollHeight > view.offsetHeight) {  
         fontSize = fontSize * .98;
         view.style.fontSize = fontSize + 'vh';  
     }
@@ -107,7 +107,13 @@ function operate(operator) {
             return product;      
             break;
         case '/':
-            let quotient = divide(x,y);
+            let quotient;
+            if(y == 0) {
+                clearAll();
+                quotient = 'Dividing by zero ruins math.  Bad User!';
+            } else {
+                quotient = divide(x,y);
+            }
             return quotient;
             break;
     }
