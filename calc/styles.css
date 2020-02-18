@@ -1,0 +1,65 @@
+
+body {
+    background-color: #B1A688;
+    background: url("woodbg2.jpg");
+    background-size: cover;
+    
+}
+
+#calcBody {
+    background-color:#121327;
+    height: 100vh;
+    max-width: 100vw;
+    max-width: 900px;
+    margin: 0px auto;
+    border-radius: 2px;
+    box-shadow: 3px 3px 50px 10px #111;  
+    font-family: Times;
+}
+
+#view {
+    width: 96%;
+    height: 7%;
+    margin: 2% 2%;
+    background-color: #FFF; 
+    border-radius: 2px;
+    text-align: right;
+    box-shadow: inset 2px 2px 6px #999;
+    float: left;
+}
+
+#buttonContain {
+    width: 80%;
+    margin: 0 10%;
+    float: left;
+}
+
+.button {
+    width: 24%;
+    margin: 0.5%;
+    padding: 4vh 0;
+    background-color: #888998;
+    float: left;
+    
+    text-align: center;
+    font-size: 7vh;
+    color: #121327;
+    cursor: pointer;
+}
+
+.clear {
+    width:49%;
+}
+
+.number {
+    background-color: #DFDFE7;
+}
+
+.button:hover {
+    box-shadow: inset 0 0 40px #223;
+
+}
+
+.button:active {
+    background-color: #fffcf6;
+}
