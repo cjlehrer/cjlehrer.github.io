@@ -5,7 +5,8 @@ const calc = {
     operators: new Array(),
     number1: undefined,
     number2: undefined,
-    repeatOpeator: false
+    repeatOpeator: false,
+    back: true
 }
 
 
@@ -42,54 +43,24 @@ function writeNumbers (num) {
         clearNumbers();
         fontReset();
     } 
+    
     if (calc.displayValue.length <= 18) {
         calc.displayValue = calc.displayValue.concat(num);  
     }
-    
-    /*
-    if (calc.displayValue.toString().search('e+') > 0 && calc.displayValue.toString().length > 18) {
-        view.style.fontSize = (fontSize * .9) + 'vh';
-    } else if(calc.displayValue.toString().length > 18 ) {
-        fontSize = fontSize * .964;
-        view.style.fontSize = fontSize + 'vh';
-    } 
-    if(calc.displayValue.toString().length > 18 ) {
-        
-        let newFontSize = fontSize * ((18/calc.displayValue.length));
-        //                             max characters / currentCharacters
-        view.style.fontSize = newFontSize + 'vh';   
-    }*/
+
 
     display(calc.displayValue);
 
-    /*
-    if(view.scrollWidth> view.offsetWidth) {  //this is gross
-        
-        let multiplier = (calc.displayValue.length)/(calc.displayValue.length + 1);
-        fontSize = fontSize * multiplier;
+    while(view.scrollWidth> view.offsetWidth) {  
+        fontSize = fontSize * .98;
         view.style.fontSize = fontSize + 'vh';  
-    }*/
+    }
 }
-/*
-function getTextWidth(text) { 
-  
-    inputText = text; 
-    font = fontSize +" Times"; 
 
-    canvas = document.createElement("canvas"); 
-    context = canvas.getContext("2d"); 
-    context.font = font; 
-    width = context.measureText(inputText).width; 
-    formattedWidth = Math.ceil(width) + "px"; 
-
-    document.querySelector('.output').textContent 
-                = formattedWidth; 
-} */
 
 
 
 function clearNumbers() {
-    fontReset();
     clearDisplay();
     calc.displayValue = '';
     calc.newNum = false;
@@ -149,13 +120,14 @@ function operate(operator) {
 function equals() {
     let operator;
     operator = calc.operators.shift();
-    let result;
+
     calc.displayValue = operate(operator);
     calc.newNum = true;
     writeNumbers(calc.displayValue);
     calc.number1 = undefined;
     calc.number2 = undefined;
     calc.repeatOpeator = false;
+    calc.back = false;
 }
 
 function equalCheck() {
@@ -175,11 +147,13 @@ function doDecimal(button) {
 }
 
 function backspace() {
-    let str =calc.displayValue
-    str = str.slice(0, -1);
-    calc.newNum = true;
+    if(calc.back == true){
+        let str =calc.displayValue
+        str = str.slice(0, -1);
+        calc.newNum = true;
+        writeNumbers(str);
+    }
 
-    writeNumbers(str);
 }
 
 function catchNumber(button) {
@@ -221,6 +195,7 @@ function buttonCheck(button) {
         case '7':
         case '8':
         case '9':
+            calc.back == true;
             writeNumbers(button);
             calc.repeatOpeator = false;
             break;
