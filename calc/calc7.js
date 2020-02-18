@@ -110,7 +110,7 @@ function operate(operator) {
             let quotient;
             if(y == 0) {
                 clearAll();
-                quotient = 'Dividing by zero ruins math.  Bad User!';
+                quotient = 'Dividing by zero ruins math.';
             } else {
                 quotient = divide(x,y);
             }
