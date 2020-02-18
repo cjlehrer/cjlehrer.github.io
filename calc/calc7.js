@@ -6,7 +6,8 @@ const calc = {
     number1: undefined,
     number2: undefined,
     repeatOpeator: false,
-    back: true
+    back: false,
+    clearEverything: false
 }
 
 
@@ -77,11 +78,10 @@ function clearAll() { // when C is pressed
     calc.number1 = undefined;
     calc.number2 = undefined;
     fontReset();
-
     clearDisplay();
 }
 
-function clearDisplay () { //when CE is pressed
+function clearDisplay () { 
     calc.displayValue = '';
     display(0);
 }
@@ -94,19 +94,19 @@ function operate(operator) {
     let output;
 
     switch (operator) {
-        case 'add':
+        case '+':
             let sum = add(x,y);
             return sum;
             break;
-        case 'subtract':
+        case '-':
             let result = subtract(x,y);
             return result;
             break;
-        case 'multiply':
+        case '*':
             let product = multiply(x,y);
             return product;      
             break;
-        case 'divide':
+        case '/':
             let quotient = divide(x,y);
             return quotient;
             break;
@@ -149,9 +149,15 @@ function doDecimal(button) {
 function backspace() {
     if(calc.back == true){
         let str =calc.displayValue
-        str = str.slice(0, -1);
-        calc.newNum = true;
-        writeNumbers(str);
+        if(str.length == 1) {
+            calc.displayValue == '';
+            clearDisplay();
+        } else {
+            str = str.slice(0, -1);
+            calc.newNum = true;
+            writeNumbers(str);
+        }
+
     }
 
 }
@@ -162,18 +168,24 @@ function catchNumber(button) {
             calc.number1 = calc.displayValue;
         } else {
             calc.number2 = calc.displayValue;
-
         }
         calc.repeatOpeator = true;
+
     } else {
         calc.operators.pop();
     }
-    if(button != 'equals') {
+    if(button != 'Enter') {
         calc.operators.push(button);
     }
     calc.newNum = true;
 }
 
+function clearEverythingCheck() {
+    if(calc.clearEverything == true) {
+        clearAll();
+        calc.clearEverything == false;
+    }
+}
 function buttonCheck(button) {
     calc.displayValue = calc.displayValue.toString();
     switch (button) {
@@ -195,41 +207,49 @@ function buttonCheck(button) {
         case '7':
         case '8':
         case '9':
-            calc.back == true;
+            calc.back = true;
+            clearEverythingCheck();
             writeNumbers(button);
             calc.repeatOpeator = false;
+
             break;
         case '.':
+            calc.back = true;
+            clearEverythingCheck();
             doDecimal(button);
             calc.repeatOpeator = false;
+
             break;
         case 'plusMinus':
             calc.displayValue = Number(calc.displayValue * -1);
             display(calc.displayValue);
             break;
-        case 'backspace':
+        case 'Backspace':
             backspace();
             break;
-        case 'add':
-            case 'subtract':
-            case 'multiply':
-            case 'divide':           
-        case 'equals':
+        case '+':
+        case '-':
+        case '*':
+        case '/':      
+            calc.clearEverything = false;     
+        case 'Enter':
             catchNumber(button);
             if(equalCheck() == 'yes') {
                 equals();
             }            
-        case 'add':
-        case 'subtract':
-        case 'multiply':
-        case 'divide':
-        case 'equals':  
-            catchNumber(button); 
+            if(button == 'Enter') {
+                calc.clearEverything = true; 
+            }
 
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+            catchNumber(button); 
             if(equalCheck() == 'yes') {
                 equals();
             }
-
+            break;           
         default:
 
     }
@@ -254,3 +274,6 @@ buttons.forEach((button) => {
     });
 });
 
+document.addEventListener('keydown', (e) => {
+    buttonCheck(e.key);
+ });
