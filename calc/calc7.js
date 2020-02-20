@@ -9,14 +9,10 @@ const calc = {
     back: false,
     clearEverything: false
 }
-
-
-
 const view = document.getElementById('view');
 let fontSize = 7;
 view.style.fontSize = fontSize + 'vh';
 let fontResetSize = 7;
-
 
 function add(x,y) { 
     return x + y;
@@ -44,22 +40,13 @@ function writeNumbers (num) {
         clearNumbers();
         fontReset();
     } 
-    
-    //if (calc.displayValue.length <= 18) {
-        calc.displayValue = calc.displayValue.concat(num);  
-    //}
-
-
+    calc.displayValue = calc.displayValue.concat(num); 
     display(calc.displayValue);
-
     while(view.scrollWidth > view.offsetWidth || view.scrollHeight > view.offsetHeight) {  
         fontSize = fontSize * .98;
         view.style.fontSize = fontSize + 'vh';  
     }
 }
-
-
-
 
 function clearNumbers() {
     clearDisplay();
@@ -77,6 +64,7 @@ function clearAll() { // when C is pressed
     calc.operators = [];
     calc.number1 = undefined;
     calc.number2 = undefined;
+    calc.clearEverything = false;
     fontReset();
     clearDisplay();
 }
@@ -86,13 +74,17 @@ function clearDisplay () {
     display(0);
 }
 
-
-
 function operate(operator) {
-    y = Number(calc.number2);
-    x = Number(calc.number1);
+    let y;
+    let x;
     let output;
-
+    if(calc.number1.includes('.') || calc.number2.includes('.')) {
+        y = Number(calc.number2)
+        x = Number(calc.number1)
+    } else {
+        y = BigInt(calc.number2);
+        x = BigInt(calc.number1);
+    }
     switch (operator) {
         case '+':
             let sum = add(x,y);
@@ -117,16 +109,11 @@ function operate(operator) {
             return quotient;
             break;
     }
-
 }
-
-
-
 
 function equals() {
     let operator;
     operator = calc.operators.shift();
-
     calc.displayValue = operate(operator);
     calc.newNum = true;
     writeNumbers(calc.displayValue);
@@ -137,7 +124,6 @@ function equals() {
 }
 
 function equalCheck() {
-
     if(calc.number1 !== undefined && calc.number2 !== undefined && calc.operators[0] !== undefined) {
         return 'yes';
     } else {
@@ -163,9 +149,7 @@ function backspace() {
             calc.newNum = true;
             writeNumbers(str);
         }
-
     }
-
 }
 
 function catchNumber(button) {
@@ -176,7 +160,6 @@ function catchNumber(button) {
             calc.number2 = calc.displayValue;
         }
         calc.repeatOpeator = true;
-
     } else {
         calc.operators.pop();
     }
@@ -217,7 +200,6 @@ function buttonCheck(button) {
             clearEverythingCheck();
             writeNumbers(button);
             calc.repeatOpeator = false;
-
             break;
         case '.':
             calc.back = true;
@@ -246,7 +228,6 @@ function buttonCheck(button) {
             if(button == 'Enter') {
                 calc.clearEverything = true; 
             }
-
         case '+':
         case '-':
         case '*':
@@ -257,18 +238,7 @@ function buttonCheck(button) {
             }
             break;           
         default:
-
     }
-/*
-    if(calc.displayValue == '') {
-        display(0);
-        calc.number1 == '';
-        calc.number2 == '';
-        calc.operator1 == '';
-        calc.operator2 == '';
-    }
-*/
-
 }   
 
 
@@ -276,7 +246,6 @@ buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         let buttonPress = button.getAttribute('data-key');
         buttonCheck(buttonPress);
-        
     });
 });
 
