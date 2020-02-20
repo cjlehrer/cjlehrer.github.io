@@ -42,7 +42,9 @@ function writeNumbers (num) {
     } 
     calc.displayValue = calc.displayValue.concat(num); 
     display(calc.displayValue);
-    while(view.scrollWidth > view.offsetWidth || view.scrollHeight > view.offsetHeight) {  
+  
+    let count =0;
+    while(view.scrollWidth > view.offsetWidth || view.scrollHeight > view.offsetHeight && calc.displayValue != '') {  
         fontSize = fontSize * .98;
         view.style.fontSize = fontSize + 'vh';  
     }

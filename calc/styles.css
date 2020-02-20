@@ -3,7 +3,6 @@ body {
     background-color: #B1A688;
     background: url("woodbg2.jpg");
     background-size: cover;
-    
 }
 
 #calcBody {
@@ -18,8 +17,10 @@ body {
 }
 
 #view {
-    width: 96%;
-    height: 7%;
+    width: 94%;
+    padding: 1%;
+    top: 50%;
+    height: 7vh;
     margin: 2% 2%;
     background-color: #FFF; 
     border-radius: 2px;
