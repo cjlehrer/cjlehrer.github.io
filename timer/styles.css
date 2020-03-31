@@ -1,0 +1,51 @@
+
+body {
+    background-color: #444;
+    background: url("slate.jpg");
+    background-size: cover;
+    
+}
+
+
+
+#clock {    
+    width: 100vw;
+    max-width: 900px;
+    color:#ccc;
+    font-size: 6vh;
+    margin: 4vh auto;
+    font: inherit;
+    text-align: center;
+    text-shadow: 2px 2px 6px #222;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-smooth: always;
+
+}
+
+#time {
+    width: 100vw;
+    max-width: 900px;
+    font: inherit;
+    color:#ccc;
+    font-size: 12vh;
+ 
+}
+
+#day, #date {
+    float: left;
+    width: 48%;
+    font-size: 6vh;
+    margin: 1%;
+    height: auto;
+    min-heigfh
+       
+}
+
+#day {
+    text-align: right;
+
+}
+
+#date {
+        text-align: left;
+}
