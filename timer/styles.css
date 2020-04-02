@@ -2,43 +2,44 @@
 body {
     background-color: #444;
     background: url("slate.jpg");
-    background-size: cover;
-    
+    background-repeat: no-repeat;
+    background-size: 100vw 100vh;
+    min-height: 400px;
 }
 
 
 
 #clock {    
     width: 100vw;
-    max-width: 900px;
+
     color:#ccc;
     font-size: 6vh;
     margin: 4vh auto;
     font: inherit;
     text-align: center;
-    text-shadow: 2px 2px 6px #222;
+    text-shadow: 4px 4px 8px #222;
     font-family: 'Roboto Condensed', sans-serif;
-    font-smooth: always;
+
 
 }
 
 #time {
     width: 100vw;
-    max-width: 900px;
+
     font: inherit;
     color:#ccc;
     font-size: 12vh;
+    float: left;
+
  
 }
 
 #day, #date {
     float: left;
     width: 48%;
-    font-size: 6vh;
+    font-size: 4vh;
     margin: 1%;
-    height: auto;
-    min-heigfh
-       
+
 }
 
 #day {
@@ -48,4 +49,13 @@ body {
 
 #date {
         text-align: left;
+}
+
+#timerContain {
+    height: 30vh;
+    width: 30vw;
+    clear: left;
+    margin: 0 auto;
+
+    box-shadow: 0vh 0vw 3vw #222;;
 }
