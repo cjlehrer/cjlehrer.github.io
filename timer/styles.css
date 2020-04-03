@@ -13,7 +13,7 @@ body {
     width: 100%;
     min-width: 320px;
     min-height: 80px;
-    color:#ccc;
+    color:#D3D3D3;
     font-size: 36px;
     margin: 2vh auto;
     font: inherit;
@@ -26,14 +26,14 @@ body {
 #time {
   width: 100%;
   min-height: 38px;
-  color:#ccc;
+  color:#DDD;
   font-size: 36px;
 }
 
 #day, #date {
   font-size: 24px;
 
-  color: #BBBBBA;
+  color: #CFCFCF;
 }
 
 #time, #day, #date {
@@ -51,7 +51,7 @@ body {
 
 #timerContain {
     min-width: 320px;
-    min-height: 320px;
+    height: 336px;
     width: 100%;
 
     max-width: 640px;
@@ -71,32 +71,56 @@ body {
 
 .toggle {
     margin-top: 2vh; 
+
 }
 
-.toggle, .output {
-    float: left;
-    width: 46%;
-    
+.toggle {
     text-align: center;
+}
 
+.output {
+  text-align: center;
+  clear: both;
 }
 
 .session, #sessionOutput{
     text-align: center;
-    margin-right: 4%;
-    
+}
+
+.statusTitle {
+
+}
+
+.session {
+  float: left;
+  margin-left: 15%;
+}
+
+.break {
+  float: right;
+  margin-right: 15%;
 }
 
 .break, #breakOutput {
     text-align: center;
-    margin-left: 4%;
+
 
 }
 
-.timer a {
-    text-decoration: none;
-    font-weight: 900;
-    color: #ccc;
+#sessionOutput, #breakOutput{
+  
+}
+
+#sessionOutput {
+
+}
+
+#breakOutput {
+
+}
+
+.button:hover {
+    color: #6b3;
 }
 
 .timer a:hover {
@@ -107,18 +131,9 @@ body {
   
 
 }
-.output {
-    
 
-}
 
-#sessionOutput {
 
-}
-
-#breakOutput {
-
-}
 
 .break,#breakOutput, .break a {
    
@@ -252,4 +267,28 @@ ul li img:hover {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+
+.panel {
+  margin: 100px;
+}
+
+#lengthQuest input, #breakQuest input {
+  margin: 10px;
+  font-size: 20px;
+  text-align: right;
+}
+
+#numberInput {
+  
+}
+
+#lengthButton:hover {
+  color: #222;
+  background-color: #999;
+}
+
+#lengthButton {
+
 }

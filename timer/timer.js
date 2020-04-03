@@ -46,10 +46,7 @@ function buttonCheck(button) {
             document.getElementById('timeRemain').innerHTML = '00:00:00';
             clearInterval(interval);
             break;
-        case 'ff':
-            setBackground('rgba(150,250,150, .3)');
-            buttonSwitch(document.getElementById('pause'), 'play');
-            break;
+
         case 'sound':
             buttonSwitch(element, 'mute');
             break;
@@ -69,7 +66,55 @@ function buttonCheck(button) {
             changeValue(-1, 'break');
             console.log(button);
             break;
+        case 'twenty':
+            twentyToggle();
+            break;
+        case 'sessionOutput':
+        case 'breakOutput':
+            captureNumber(button);
+            document.getElementById('lengthButton').setAttribute('data-key',button);
+            
+            break
+        case 'lengthButton':
+            submitButton(button, 'numberInput');
+            hideToggle('timer', 'lengthQuest');
+            break;
+        case 'ff':
+            buttonSwitch(document.getElementById('pause'), 'play');
+        case 'yesBreak':
+            submitButton(button, )
+            break;
+        case 'noBreak':
+            submitButton(button, )
+            break;
+    }
+}
 
+
+function breakTime(this) {
+    setBackground('rgba(150,250,150, .3)');
+}
+
+function submitButton(button, input) {
+    let key = document.getElementById(button).dataset.key;
+    let value = document.getElementById(input).value;
+    document.getElementById(key).innerHTML = value;
+}
+
+function captureNumber(button) {
+    hideToggle('timer', 'lengthQuest');
+    let status = (button).substring(0, button.length-6);
+    document.getElementById('theStatus').innerHTML = status + ' duration.';
+    document.getElementById('numberInput').focus();
+    let current = Number(document.getElementById(button).innerHTML);
+    document.getElementById('numberInput').setAttribute('value', current);
+}
+
+function hideToggle() {
+    for (let i = 0; i < arguments.length; i++) {
+        document.getElementById(arguments[i]).hidden == false ? 
+            document.getElementById(arguments[i]).hidden = true:
+            document.getElementById(arguments[i]).hidden = false;     
     }
 }
 
@@ -87,9 +132,9 @@ function startTimer(totalTime) {
                 : minutes > 0 ? (minutes -= 1, seconds = 59)
                     : hours > 0 ? (hours -= 1, minutes = 59, seconds = 59) : 0;
 
-            if (seconds == 0 && minutes == 0 && hours == 0) {
-                clearInterval(interval);
-                breakTimer();
+            if (seconds == 0 && minutes == 0 && hours == 0) {  //ask if they want to start break
+                //clearInterval(interval);
+                //breakTimer();
             }
             document.getElementById('timeRemain').innerHTML =
                 ('0' + hours.toString()).slice(-2) + ':' +
@@ -102,7 +147,7 @@ function startTimer(totalTime) {
             }
         }
 
-    }, 1000)
+    }, 10)
 }
 
 function breakTimer() {
@@ -132,6 +177,13 @@ function buttonSwitch(element, nextButton) {
     }
 }
 
+function twentyToggle() {
+    document.getElementById('twenty').checked == true ? 
+        document.getElementById('twentyRemain').innerHTML = '20:00': 
+        document.getElementById('twentyRemain').innerHTML = '';
+    }
+
+
 buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
         let buttonPress = button.id;
@@ -142,10 +194,11 @@ buttons.forEach((button) => {
 
 function clockTime() {
     setInterval(function () {
+
         let now = new Date();
-        let hour = ('0' + now.getHours().toString()).slice(-2);
+        let hour = now.getHours().toString();
         let meridiem;
-        hour > 13 ? hour = (hour - 12, meridiem = ' PM') : meridiem = ' AM';
+        hour > 12 ? (hour = hour -= 12, meridiem = ' PM') : meridiem = ' AM';
         let minutes = ('0' + now.getMinutes().toString()).slice(-2);
         document.getElementById('time').innerHTML = hour + ':' + minutes + meridiem;
         document.getElementById('day').innerHTML = weekday[now.getDay()] + ', ';

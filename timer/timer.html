@@ -19,36 +19,40 @@
 
 
         <div id="timerContain">
-            <div class="timer">
+            <div id="timer">
                 <div class="session toggle">
                     <span class="button mediaButtons" id="sessionUp">  &#8593;  </span>
-                    <span>Session</span>
+                    <span class="statusTitle">Session</span>
                     <span class="button mediaButtons" id="sessionDown">  &#8595;	</span>
+                    <div id="sessionOutput" class="output button mediaButtons">55</div>
                 </div>
                
                 <div class="break toggle">
                     <span class="button mediaButtons" id="breakUp">  &#8593;  </span>
-                    <span>Break</span>
+                    <span class="statusTitle">Break</span>
                     <span class="button mediaButtons" id="breakDown">  &#8595;	</span>
+                    <div id="breakOutput" class="output button mediaButtons">5</div> 
                 </div>
   
-                <div id="sessionOutput" class="output">55</div>
-                <div id="breakOutput" class="output">5</div>               
+                
+                              
+                
+                
                 <div id="timeRemain">00:00:00</div>
-               
+                <div id="status"></div>
                 <ul>
-                    <li><img id="play" class="mediaButtons button" src="play.png" alt="play/pause"></li>
-                    <li><img id="stop" class="mediaButtons button" src="stop.png" alt="stop"></li> 
-                    <li><img id="ff" class="mediaButtons button" src="ff.png" alt="ff"></li>
-                    <li><img id="sound" class="mediaButtons button" src="sound.png" alt="sound"></li> 
+                    <li><img id="play" class="mediaButtons button" src="play.png" alt="play/pause" title="Start or Pause Timer."></li>
+                    <li><img id="stop" class="mediaButtons button" src="stop.png" alt="stop" title="Stop reset timer."></li> 
+                    <li><img id="ff" class="mediaButtons button" src="ff.png" alt="ff" title="Skip to break" data-value=0></li>
+                    <li><img id="sound" class="mediaButtons button" src="sound.png" alt="sound" title="Toggle mute"></li> 
 
                 </ul>
 
                 <div id="theForm">
                     <form>
                         <label class="container" 
-                            title="Every twenty minutes, look at least 20 feet away for 20 seconds">
-                            20/20/20 Rule: 
+                            title="Every twenty minutes, look at least 20 feet away for 20 seconds.  A sound will play after 20 minutes and again after 20 seconds.">
+                            20/20/20 Rule 
                             <input type="checkbox" checked="checked" id="twenty" class="mediaButtons">
                             <span class="checkmark"></span>
                         </label>
@@ -57,7 +61,20 @@
                 </div>    
 
             </div>
-         
+
+            <div id="lengthQuest" class="panel" hidden>
+                <div>Please enter the <span id="theStatus"></span></div>
+                <input type="number" id="numberInput" name="numberInput">
+
+                <input type="button" id="lengthButton" data-key="" data-value="" value="Submit" class="button mediaButtons">
+            </div>
+            
+            <div id="breakQuest" class="panel" hidden>
+                <div>Would you like to take a break?</div>
+                <input type="button" id="yesBreak" value="Yes" data-value=0 class="button mediaButtons">
+                <input type="button" id="noBreak" value="Snooze 10 minutes" data-value=10 class="button mediaButtons">
+    
+            </div>
         </div>        
     </div>
 
