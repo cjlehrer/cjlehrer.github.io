@@ -10,52 +10,246 @@ body {
 
 
 #clock {    
-    width: 100vw;
-
+    width: 100%;
+    min-width: 320px;
+    min-height: 80px;
     color:#ccc;
-    font-size: 6vh;
-    margin: 4vh auto;
+    font-size: 36px;
+    margin: 2vh auto;
     font: inherit;
     text-align: center;
     text-shadow: 4px 4px 8px #222;
     font-family: 'Roboto Condensed', sans-serif;
-
-
+    float:left;
 }
 
 #time {
-    width: 100vw;
-
-    font: inherit;
-    color:#ccc;
-    font-size: 12vh;
-    float: left;
-
- 
+  width: 100%;
+  min-height: 38px;
+  color:#ccc;
+  font-size: 36px;
 }
 
 #day, #date {
-    float: left;
-    width: 48%;
-    font-size: 4vh;
-    margin: 1%;
+  font-size: 24px;
+
+  color: #BBBBBA;
+}
+
+#time, #day, #date {
+  text-shadow: 4px 4px 8px #222;
+  text-align: center;
 
 }
 
-#day {
-    text-align: right;
-
+#dateDiv {
+  margin: 0 1% 1% 1%;
+  min-height: 26px;
 }
 
-#date {
-        text-align: left;
-}
+
 
 #timerContain {
-    height: 30vh;
-    width: 30vw;
-    clear: left;
-    margin: 0 auto;
+    min-width: 320px;
+    min-height: 320px;
+    width: 100%;
 
-    box-shadow: 0vh 0vw 3vw #222;;
+    max-width: 640px;
+  
+    clear: both;
+    margin: 0 auto;
+    overflow: hidden;
+    font-size: 30px;
+    border-radius: 8px;
+    background-color: rgba(150,150,150, .3);
+    box-shadow: 0vh 0vw 3vw #222;
+}
+
+.button {
+  cursor: pointer;
+}
+
+.toggle {
+    margin-top: 2vh; 
+}
+
+.toggle, .output {
+    float: left;
+    width: 46%;
+    
+    text-align: center;
+
+}
+
+.session, #sessionOutput{
+    text-align: center;
+    margin-right: 4%;
+    
+}
+
+.break, #breakOutput {
+    text-align: center;
+    margin-left: 4%;
+
+}
+
+.timer a {
+    text-decoration: none;
+    font-weight: 900;
+    color: #ccc;
+}
+
+.timer a:hover {
+    color: #222;
+}
+
+#timeRemain {
+  
+
+}
+.output {
+    
+
+}
+
+#sessionOutput {
+
+}
+
+#breakOutput {
+
+}
+
+.break,#breakOutput, .break a {
+   
+}
+
+.session, #sessionOutput, .session a {
+
+}
+
+
+#timeRemain {
+    font-size: 96px;
+    clear: both;
+    padding: 10px;
+    
+}
+
+form {
+  clear: both;
+  float: left;
+  margin: 20px 0 7px 20px !important;
+  
+}
+
+#theForm {
+  clear: both;
+  background-color: rgba(0,0,0, .3);
+  overflow: hidden;
+}
+
+
+label {
+  float: left;
+  text-align: center;
+  font-size: 40px;
+}
+
+#twentyRemain {
+  float: right;
+}
+
+
+
+ul {
+  clear:both;
+
+}
+
+ul li {
+  width: 25%;
+  float: left;
+  margin-bottom: 10px;
+  height: 75px;
+  overflow: hidden;
+
+}
+
+
+ul li img:hover {
+  position:relative;
+  top: -75px;
+  cursor: pointer;
+}
+
+
+/* ----  Checkbox  ----  */
+
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 26px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #FAFAFA;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #FAFAFA;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #FAFAFA;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid #222;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }

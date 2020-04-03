@@ -6,22 +6,58 @@
     <link rel="stylesheet" type="text/css" href="reset.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap" rel="stylesheet">
     
+    
 </head>
-<body>
+<body onload=clockTime()>
 
     <div id="clock">
-        <div><p id="time">3:30 PM</p></div>
-        <div><p id="day">Thursday</p></div>
-        <div><p id="date">March 31</p></div>
+        <div><p id="time" ></p></div>
+        <div id="dateDiv">
+            <span id="day"></span>
+            <span id="date"></span>
+        </div>
+
 
         <div id="timerContain">
-            <div id="largeTimer">
-    
+            <div class="timer">
+                <div class="session toggle">
+                    <span class="button mediaButtons" id="sessionUp">  &#8593;  </span>
+                    <span>Session</span>
+                    <span class="button mediaButtons" id="sessionDown">  &#8595;	</span>
+                </div>
+               
+                <div class="break toggle">
+                    <span class="button mediaButtons" id="breakUp">  &#8593;  </span>
+                    <span>Break</span>
+                    <span class="button mediaButtons" id="breakDown">  &#8595;	</span>
+                </div>
+  
+                <div id="sessionOutput" class="output">55</div>
+                <div id="breakOutput" class="output">5</div>               
+                <div id="timeRemain">00:00:00</div>
+               
+                <ul>
+                    <li><img id="play" class="mediaButtons button" src="play.png" alt="play/pause"></li>
+                    <li><img id="stop" class="mediaButtons button" src="stop.png" alt="stop"></li> 
+                    <li><img id="ff" class="mediaButtons button" src="ff.png" alt="ff"></li>
+                    <li><img id="sound" class="mediaButtons button" src="sound.png" alt="sound"></li> 
+
+                </ul>
+
+                <div id="theForm">
+                    <form>
+                        <label class="container" 
+                            title="Every twenty minutes, look at least 20 feet away for 20 seconds">
+                            20/20/20 Rule: 
+                            <input type="checkbox" checked="checked" id="twenty" class="mediaButtons">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="container" id="twentyRemain">20:00</label>
+                    </form>
+                </div>    
+
             </div>
-            <div id="smallTimer">
-    
-            </div>
-            
+         
         </div>        
     </div>
 
@@ -30,5 +66,6 @@
 
 </body>
 <script src="timer.js"></script>
+
 
 </html>
