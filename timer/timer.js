@@ -41,10 +41,7 @@ function buttonCheck(button) {
             //setBackground('rgba(150,150,150, .3)');
             break;
         case 'stop':
-            setBackground('rgba(150,150,150, .3)');
-            buttonSwitch(document.getElementById('pause'), 'play');
-            document.getElementById('timeRemain').innerHTML = '00:00:00';
-            clearInterval(interval);
+            stopAll();
             break;
 
         case 'sound':
@@ -64,8 +61,7 @@ function buttonCheck(button) {
             break;
         case 'breakDown':
             changeValue(-1, 'break');
-            console.log(button);
-            break;
+               break;
         case 'twenty':
             twentyToggle();
             break;
@@ -81,18 +77,31 @@ function buttonCheck(button) {
             break;
         case 'ff':
             buttonSwitch(document.getElementById('pause'), 'play');
+            breakTime();
+            break;
         case 'yesBreak':
-            submitButton(button, )
+            hideToggle('timer', 'breakQuest');
+            breakTime();
             break;
         case 'noBreak':
-            submitButton(button, )
+            hideToggle('timer', 'breakQuest');
+            startTimer(10);
+            
             break;
     }
 }
 
+function stopAll() {
+    setBackground('rgba(150,150,150, .3)');
+    buttonSwitch(document.getElementById('pause'), 'play');
+    document.getElementById('timeRemain').innerHTML = '00:00:00';
+    clearInterval(interval);
+}
 
-function breakTime(this) {
+function breakTime(status) {
     setBackground('rgba(150,250,150, .3)');
+    startTimer(Number(document.getElementById('breakOutput').innerHTML),true);
+    
 }
 
 function submitButton(button, input) {
@@ -118,11 +127,11 @@ function hideToggle() {
     }
 }
 
-function startTimer(totalTime) {  
+function startTimer(totalTime,breakTest) {  
     let hours = Math.floor(totalTime / 60); 
     let minutes = (totalTime - (hours * 60))  
     let seconds = 0;
-
+    console.log('test: ' + breakTest);
     interval = setInterval(function () {
 
         if (!isPaused) {
@@ -135,25 +144,29 @@ function startTimer(totalTime) {
             if (seconds == 0 && minutes == 0 && hours == 0) {  //ask if they want to start break
                 //clearInterval(interval);
                 //breakTimer();
+                clearInterval(interval);
+                if(breakTest != true) {
+                    console.log('clearing');
+                    hideToggle('timer', 'breakQuest');
+                    
+                } 
+                stopAll();
             }
+
             document.getElementById('timeRemain').innerHTML =
                 ('0' + hours.toString()).slice(-2) + ':' +
                 ('0' + minutes.toString()).slice(-2) + ':' +
                 ('0' + seconds.toString()).slice(-2);
 
 
-            if(document.getElementById('twenty').checked = true) {
+            if(document.getElementById('twenty').checked = true) {  //deal with 20/20/20
                 
             }
         }
 
-    }, 10)
+    }, 1000)
 }
 
-function breakTimer() {
-    setBackground('rgba(150,250,150, .3)');
-    startTimer(Number(document.getElementById('breakOutput').innerHTML));
-}
 
 
 function changeValue(direction, timer) { // this needs to account for hours and should probably give an option to up the number by more than 1
