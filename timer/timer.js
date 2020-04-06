@@ -2,6 +2,11 @@ const buttons = document.querySelectorAll('.mediaButtons');
 let isPaused = false;
 let whatPaused;
 let interval;
+let intervalTwenty;
+let mute = false;
+
+
+
 let month = new Array(12);
 month[0] = "January";
 month[1] = "February";
@@ -33,6 +38,10 @@ function buttonCheck(button) {
             setBackground('rgba(150,150,250, .3)');
             if (!isPaused) {
                 startTimer(Number(document.getElementById('sessionOutput').innerHTML),'timeRemain');
+                if(document.getElementById('twenty').checked == true) {  //deal with 20/20/20
+                    startTwenty(20,'twentyRemain');
+
+                }
             }
             isPaused = false;
             break;
@@ -48,9 +57,11 @@ function buttonCheck(button) {
 
         case 'sound':
             buttonSwitch(element, 'mute');
+            mute = false;
             break;
         case 'mute':
             buttonSwitch(element, 'sound');
+            mute = true;
             break;
         case 'sessionUp':
             changeValue(1, 'session');
@@ -98,13 +109,23 @@ function stopAll() {
     setBackground('rgba(150,150,150, .3)');
     buttonSwitch(document.getElementById('pause'), 'play');
     document.getElementById('timeRemain').innerHTML = '00:00:00';
+    document.getElementById('twentyRemain').innerHTML = '20:00';
+    displayStatus('');
     clearInterval(interval);
+    clearInterval(intervalTwenty);
 }
+
+function displayStatus(status) {
+    document.getElementById('status').innerHTML = status;
+}
+
 
 function breakTime(status) {
     setBackground('rgba(150,250,150, .3)');
     startTimer(Number(document.getElementById('breakOutput').innerHTML),'timeRemain',true);
-    
+    document.getElementById('status').innerHTML = "Breaktime";
+    buttonSwitch(document.getElementById('play'), 'pause');
+    whatPaused = 'break';
 }
 
 function submitButton(button, input) {
@@ -120,6 +141,7 @@ function captureNumber(button) {
     document.getElementById('numberInput').focus();
     let current = Number(document.getElementById(button).innerHTML);
     document.getElementById('numberInput').setAttribute('value', current);
+    document.getElementById('numberInput').select();
 }
 
 function hideToggle() {
@@ -130,30 +152,73 @@ function hideToggle() {
     }
 }
 
+function startTwenty() {
+    let minutesTwenty = 20;
+    let secondsTwenty = 0;
+
+    intervalTwenty = setInterval(function () {
+
+        if (!isPaused) {
+            document.getElementById('twentyRemain').innerHTML = secondsTwenty;
+
+            secondsTwenty > 0 ? secondsTwenty -= 1: 
+                minutesTwenty > 0 ? (minutesTwenty -= 1, secondsTwenty = 59) : 0;
+
+            if (secondsTwenty == 0 && minutesTwenty == 0) {  //ask if they want to start break
+                clearInterval(intervalTwenty);
+                startTwenty();
+
+                if(mute == false) {
+                    console.log('play sound twenty');
+                }
+            }
+
+            document.getElementById('twentyRemain').innerHTML =
+                ('0' + minutesTwenty.toString()).slice(-2) + ':' +
+                ('0' + secondsTwenty.toString()).slice(-2);
+        }
+
+    }, 1000)
+}
+
+
 function startTimer(totalTime, location, breakTest) {  
     let hours = Math.floor(totalTime / 60); 
-    let minutes = (totalTime - (hours * 60))  
+    let minutes = (totalTime - (hours * 60));
     let seconds = 0;
     console.log('test: ' + breakTest);
+    
+    document.getElementById(location).innerHTML =
+        ('0' + hours.toString()).slice(-2) + ':' +
+        ('0' + minutes.toString()).slice(-2) + ':' +
+        ('0' + seconds.toString()).slice(-2);
+
     interval = setInterval(function () {
 
         if (!isPaused) {
             document.getElementById(location).innerHTML = seconds;
 
-            seconds > 0 ? seconds -= 1
-                : minutes > 0 ? (minutes -= 1, seconds = 59)
-                    : hours > 0 ? (hours -= 1, minutes = 59, seconds = 59) : 0;
+            seconds > 0 ? seconds -= 1: 
+                minutes > 0 ? (minutes -= 1, seconds = 59): 
+                    hours > 0 ? (hours -= 1, minutes = 59, seconds = 59) : 0;
 
             if (seconds == 0 && minutes == 0 && hours == 0) {  //ask if they want to start break
                 //clearInterval(interval);
                 //breakTimer();
+                stopAll();
                 clearInterval(interval);
-                if(breakTest != true) {
+                if(mute == false) {
+                    console.log('play sound main');
+                }
+                if(breakTest != true && location == 'timeRemain') {
                     console.log('clearing');
                     hideToggle('timer', 'breakQuest');
                     
                 } 
-                stopAll();
+                
+
+
+
             }
 
             document.getElementById(location).innerHTML =
@@ -161,6 +226,8 @@ function startTimer(totalTime, location, breakTest) {
                 ('0' + minutes.toString()).slice(-2) + ':' +
                 ('0' + seconds.toString()).slice(-2);
 
+
+                
         }
 
     }, 1000)
@@ -170,9 +237,6 @@ function startTimer(totalTime, location, breakTest) {
 
 function changeValue(direction, timer) { // this needs to account for hours and should probably give an option to up the number by more than 1
     let time = Number(document.getElementById(timer + 'Output').innerHTML) + direction;
-
-
-
     document.getElementById(timer + 'Output').innerHTML = time;
 }
 
@@ -180,7 +244,6 @@ function changeValue(direction, timer) { // this needs to account for hours and 
 function setBackground(color) {
     document.getElementById("timerContain").style.backgroundColor = color;
 }
-
 
 function buttonSwitch(element, nextButton) {
     if (element !== null) {
@@ -202,7 +265,6 @@ buttons.forEach((button) => {
         buttonCheck(buttonPress);
     });
 });
-
 
 function clockTime() {
     setInterval(function () {

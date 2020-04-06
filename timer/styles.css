@@ -51,7 +51,7 @@ body {
 
 #timerContain {
     min-width: 320px;
-    height: 335px;
+    height: 363px;
     width: 100%;
 
     max-width: 640px;
@@ -87,8 +87,8 @@ body {
     text-align: center;
 }
 
-.statusTitle {
-
+#status {
+    height: 28px;
 }
 
 .session {
