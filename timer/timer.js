@@ -1,5 +1,6 @@
 const buttons = document.querySelectorAll('.mediaButtons');
 let isPaused = false;
+let whatPaused;
 let interval;
 let month = new Array(12);
 month[0] = "January";
@@ -31,14 +32,15 @@ function buttonCheck(button) {
             buttonSwitch(element, 'pause');
             setBackground('rgba(150,150,250, .3)');
             if (!isPaused) {
-                startTimer(Number(document.getElementById('sessionOutput').innerHTML));
+                startTimer(Number(document.getElementById('sessionOutput').innerHTML),'timeRemain');
             }
             isPaused = false;
             break;
         case 'pause':
             buttonSwitch(element, 'play');
             isPaused = true;
-            //setBackground('rgba(150,150,150, .3)');
+            setBackground('rgba(150,150,150, .3)');
+            whatPaused = document.getElementById('status').innerHTML;
             break;
         case 'stop':
             stopAll();
@@ -76,8 +78,9 @@ function buttonCheck(button) {
             hideToggle('timer', 'lengthQuest');
             break;
         case 'ff':
-            buttonSwitch(document.getElementById('pause'), 'play');
+            stopAll();
             breakTime();
+            buttonSwitch(document.getElementById('play'), 'pause');
             break;
         case 'yesBreak':
             hideToggle('timer', 'breakQuest');
@@ -85,7 +88,7 @@ function buttonCheck(button) {
             break;
         case 'noBreak':
             hideToggle('timer', 'breakQuest');
-            startTimer(10);
+            startTimer(10,'timeRemain');
             
             break;
     }
@@ -100,7 +103,7 @@ function stopAll() {
 
 function breakTime(status) {
     setBackground('rgba(150,250,150, .3)');
-    startTimer(Number(document.getElementById('breakOutput').innerHTML),true);
+    startTimer(Number(document.getElementById('breakOutput').innerHTML),'timeRemain',true);
     
 }
 
@@ -127,7 +130,7 @@ function hideToggle() {
     }
 }
 
-function startTimer(totalTime,breakTest) {  
+function startTimer(totalTime, location, breakTest) {  
     let hours = Math.floor(totalTime / 60); 
     let minutes = (totalTime - (hours * 60))  
     let seconds = 0;
@@ -135,7 +138,7 @@ function startTimer(totalTime,breakTest) {
     interval = setInterval(function () {
 
         if (!isPaused) {
-            document.getElementById('timeRemain').innerHTML = seconds;
+            document.getElementById(location).innerHTML = seconds;
 
             seconds > 0 ? seconds -= 1
                 : minutes > 0 ? (minutes -= 1, seconds = 59)
@@ -153,15 +156,11 @@ function startTimer(totalTime,breakTest) {
                 stopAll();
             }
 
-            document.getElementById('timeRemain').innerHTML =
+            document.getElementById(location).innerHTML =
                 ('0' + hours.toString()).slice(-2) + ':' +
                 ('0' + minutes.toString()).slice(-2) + ':' +
                 ('0' + seconds.toString()).slice(-2);
 
-
-            if(document.getElementById('twenty').checked = true) {  //deal with 20/20/20
-                
-            }
         }
 
     }, 1000)
@@ -192,7 +191,7 @@ function buttonSwitch(element, nextButton) {
 
 function twentyToggle() {
     document.getElementById('twenty').checked == true ? 
-        document.getElementById('twentyRemain').innerHTML = '20:00': 
+        document.getElementById('twentyRemain').innerHTML = '00:20:00': 
         document.getElementById('twentyRemain').innerHTML = '';
     }
 
