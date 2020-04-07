@@ -5,6 +5,8 @@ let interval;
 let intervalTwenty;
 let mute = false;
 
+let alertAudio = new Audio('alert.wav');
+
 
 
 let month = new Array(12);
@@ -57,11 +59,12 @@ function buttonCheck(button) {
 
         case 'sound':
             buttonSwitch(element, 'mute');
-            mute = false;
+            audioOff();
+            mute = true;
             break;
         case 'mute':
             buttonSwitch(element, 'sound');
-            mute = true;
+            mute = false;
             break;
         case 'sessionUp':
             changeValue(1, 'session');
@@ -95,14 +98,21 @@ function buttonCheck(button) {
             break;
         case 'yesBreak':
             hideToggle('timer', 'breakQuest');
+            audioOff();
             breakTime();
             break;
         case 'noBreak':
+            audioOff();
             hideToggle('timer', 'breakQuest');
             startTimer(10,'timeRemain');
             
             break;
     }
+}
+
+function audioOff() {
+    alertAudio.pause();
+    alertAudio.currentTime = 0;
 }
 
 function stopAll() {
@@ -113,6 +123,8 @@ function stopAll() {
     displayStatus('');
     clearInterval(interval);
     clearInterval(intervalTwenty);
+    isPaused = false;
+    audioOff();
 }
 
 function displayStatus(status) {
@@ -169,15 +181,13 @@ function startTwenty() {
                 startTwenty();
 
                 if(mute == false) {
-                    console.log('play sound twenty');
+                    alertAudio.play();
                 }
             }
-
             document.getElementById('twentyRemain').innerHTML =
                 ('0' + minutesTwenty.toString()).slice(-2) + ':' +
                 ('0' + secondsTwenty.toString()).slice(-2);
         }
-
     }, 1000)
 }
 
@@ -186,7 +196,7 @@ function startTimer(totalTime, location, breakTest) {
     let hours = Math.floor(totalTime / 60); 
     let minutes = (totalTime - (hours * 60));
     let seconds = 0;
-    console.log('test: ' + breakTest);
+
     
     document.getElementById(location).innerHTML =
         ('0' + hours.toString()).slice(-2) + ':' +
@@ -208,28 +218,23 @@ function startTimer(totalTime, location, breakTest) {
                 stopAll();
                 clearInterval(interval);
                 if(mute == false) {
-                    console.log('play sound main');
+                    alertAudio.addEventListener('ended', function() {
+                        this.currentTime = 0;
+                        this.play();
+
+                    },false);
+                    alertAudio.play();
                 }
                 if(breakTest != true && location == 'timeRemain') {
-                    console.log('clearing');
                     hideToggle('timer', 'breakQuest');
-                    
                 } 
-                
-
-
-
             }
 
             document.getElementById(location).innerHTML =
                 ('0' + hours.toString()).slice(-2) + ':' +
                 ('0' + minutes.toString()).slice(-2) + ':' +
                 ('0' + seconds.toString()).slice(-2);
-
-
-                
         }
-
     }, 1000)
 }
 
