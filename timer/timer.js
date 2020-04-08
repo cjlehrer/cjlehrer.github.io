@@ -135,7 +135,7 @@ function displayStatus(status) {
 function breakTime(status) {
     setBackground('rgba(150,250,150, .3)');
     startTimer(Number(document.getElementById('breakOutput').innerHTML),'timeRemain',true);
-    document.getElementById('status').innerHTML = "Breaktime";
+    displayStatus('Breaktime');
     buttonSwitch(document.getElementById('play'), 'pause');
     whatPaused = 'break';
 }
@@ -203,6 +203,7 @@ function startTimer(totalTime, location, breakTest) {
         ('0' + minutes.toString()).slice(-2) + ':' +
         ('0' + seconds.toString()).slice(-2);
 
+    displayStatus('Working Session');
     interval = setInterval(function () {
 
         if (!isPaused) {
