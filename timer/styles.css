@@ -47,13 +47,15 @@ body {
   min-height: 26px;
 }
 
-
+.hidden {
+  display: none;
+}
 
 #timerContain {
     min-width: 320px;
     height: 363px;
     width: 100%;
-
+    display: block;
     max-width: 640px;
   
     clear: both;
@@ -270,7 +272,7 @@ ul li img:hover {
 }
 
 
-.panel {
+.quest {
   margin: 100px;
 }
 

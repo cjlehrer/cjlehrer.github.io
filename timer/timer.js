@@ -1,40 +1,20 @@
 const buttons = document.querySelectorAll('.mediaButtons');
-let isPaused = false;
-let whatPaused;
-let interval;
-let intervalTwenty;
-let mute = false;
-let playTitle = "Start the Timer(s)";
-let pauseTitle = "Pause the Timer(s)";
 
-let alertAudio = new Audio('alert.wav');
+let isPaused = false;
+
+let interval;
 let hours;
 let minutes;
 let seconds;
 
+let intervalTwenty;
+let mute = false;
+let playTitle = "Start the Timer(s)";
+let pauseTitle = "Pause the Timer(s)";
+let status = 'work';
+let alertAudio = new Audio('alert.wav');
 
-let month = new Array(12);
-month[0] = "January";
-month[1] = "February";
-month[2] = "March";
-month[3] = "April";
-month[4] = "May";
-month[5] = "June";
-month[6] = "July";
-month[7] = "August";
-month[8] = "September";
-month[9] = "October";
-month[10] = "November";
-month[11] = "December";
 
-let weekday = new Array(7);
-weekday[0] = "Sunday";
-weekday[1] = "Monday";
-weekday[2] = "Tuesday";
-weekday[3] = "Wednesday";
-weekday[4] = "Thursday";
-weekday[5] = "Friday";
-weekday[6] = "Saturday";
 
 function buttonCheck(button) {
     let element = document.getElementById(button);
@@ -75,11 +55,10 @@ function buttonCheck(button) {
         case 'sessionOutput':
         case 'breakOutput':
             captureNumber(button);
-            document.getElementById('lengthButton').setAttribute('data-key',button);
             break;
         case 'lengthButton':
             submitButton(button, 'numberInput');
-            hideToggle('timer', 'lengthQuest');
+            hideToggle('timer');
             break;
         case 'ff':
             seconds = 0;
@@ -89,27 +68,28 @@ function buttonCheck(button) {
             isPaused = false;
             break;
         case 'yesBreak':
-            hideToggle('timer', 'breakQuest');
+            hideToggle('timer');
             audioOff();
-            breakTime();
+            isPaused = false;
+            playButton();
             break;
         case 'noBreak':
             audioOff();
             buttonSwitch(document.getElementById('play'), 'pause');
-            hideToggle('timer', 'breakQuest');
-            startTimer(10,'timeRemain','work');
+            hideToggle('timer');
+            playButton();
             setBackground('rgba(150,150,250, .3)');
             break;
         case 'yesResume':
             stopAll();
-            hideToggle('timer', 'breakQuest');
-            whatPaused = undefined;
+            hideToggle('timer');
+
             audioOff();
             playButton();
             break;
         case 'noResume':
             stopAll();
-            hideToggle('timer', 'breakQuest');
+            hideToggle('timer');
             audioOff();
             break;
     }
@@ -119,25 +99,24 @@ function playButton() {
     if (document.getElementById('play')) {
         buttonSwitch(document.getElementById('play'), 'pause', pauseTitle);
     }
-
-    let status;
-    if(whatPaused == undefined || whatPaused == 'Working Session') {
+    let timer;
+    if(status == 'work') {
         setBackground('rgba(150,150,250, .3)');
-        status = 'work';
+        timer = Number(document.getElementById('sessionOutput').innerHTML)
     } else {
         setBackground('rgba(150,250,150, .3)');
-        status = 'break'
+        timer = Number(document.getElementById('breakOutput').innerHTML)
     }
     console.log('Status at playButton:' + status);
     if (!isPaused) {
-        startTimer(Number(document.getElementById('sessionOutput').innerHTML),'timeRemain',status);
+        startTimer(timer,'timeRemain');
         if(document.getElementById('twenty').checked == true) {  //deal with 20/20/20
             startTwenty(20,'twentyRemain');
 
         }
     }
     isPaused = false;
-    whatPaused = undefined;
+
 
 }
 
@@ -147,7 +126,7 @@ function pauseTimer() {
     }
     isPaused = true;
     setBackground('rgba(150,150,150, .3)');
-    whatPaused = document.getElementById('status').innerHTML;
+
 }
 
 function audioOff() {
@@ -167,18 +146,8 @@ function stopAll() {
     audioOff();
 }
 
-function displayStatus(status) {
-    document.getElementById('status').innerHTML = status;
-}
-
-
-function breakTime() {
-    stopAll();
-    setBackground('rgba(150,250,150, .3)');
-    playButton();
-    startTimer(Number(document.getElementById('breakOutput').innerHTML),'timeRemain','break');
-    displayStatus('Breaktime');
-    buttonSwitch(document.getElementById('play'), 'pause');
+function displayStatus(dispStatus) {
+    document.getElementById('status').innerHTML = dispStatus;
 }
 
 function submitButton(button, input) {
@@ -188,26 +157,31 @@ function submitButton(button, input) {
 
 }
 
-function captureNumber(button) {
-    let element = document.getElementById('numberInput');
-    document.getElementById('numberInput').value = '';
-    hideToggle('timer', 'lengthQuest');
+function captureNumber(button) {  //this is a problem.
+    let thisValue = document.getElementById(button).innerHTML;
+    document.getElementById('numberInput').setAttribute('value',thisValue);
+    document.getElementById('lengthButton').setAttribute('data-key', button);
+    let element = document.getElementById('numberInput')
+    hideToggle('lengthQuest');
     let buttonStatus = (button).substring(0, button.length-6);
-    element.innerHTML = buttonStatus + ' duration.';
+    document.getElementById('theStatus').innerHTML = buttonStatus + ' duration.';
     let current = Number(document.getElementById(button).innerHTML);
     element.setAttribute('value', current);
-    element.value = current;
     element.select();
     element.focus();
 }
 
-function hideToggle() {
-    for (let i = 0; i < arguments.length; i++) {
-        document.getElementById(arguments[i]).hidden == false ? 
-            document.getElementById(arguments[i]).hidden = true:
-            document.getElementById(arguments[i]).hidden = false;     
-    }
+function hideToggle(show) {  
+    const panels = document.querySelectorAll('.panel')
+    panels.forEach(panel => {
+        panel.id == show ? 
+        document.getElementById(panel.id).classList.remove('hidden'): 
+        document.getElementById(panel.id).classList.add('hidden');
+    });
 }
+
+
+
 
 function startTwenty() {
     let minutesTwenty = 20;
@@ -238,7 +212,7 @@ function startTwenty() {
 }
 
 
-function startTimer(totalTime, location, status) {  
+function startTimer(totalTime, location) {  
     hours = Math.floor(totalTime / 60); 
     minutes = (totalTime - (hours * 60));
     seconds = 0;
@@ -262,13 +236,8 @@ function startTimer(totalTime, location, status) {
                 pauseTimer();
                 setBackground('rgba(150,150,150, .3)');
                 //status == 'break' ? console.log('should go to resumeQuest'): console.log('should go to breakQuest');
-                console.log('status at startTimer:' + status);
-                if(status == 'break') {
-                    document.getElementById('resumeAmt').innerHTML = document.getElementById('sessionOutput').innerHTML;
-                    alertAudio.play();
-                    hideToggle('resumeQuest', 'timer');
-
-                } else {
+                console.log('status at startTimer: ' + status + ' ' + status=='work');
+                if(status == 'work') {
                     if(mute == false) {
                         alertAudio.addEventListener('ended', function() {
                             this.currentTime = 0;
@@ -277,8 +246,13 @@ function startTimer(totalTime, location, status) {
                         },false);
                         alertAudio.play();
                     }
-                    hideToggle('timer', 'breakQuest');
-
+                    hideToggle('breakQuest');
+                    status = 'break';
+                } else {
+                    document.getElementById('resumeAmt').innerHTML = document.getElementById('sessionOutput').innerHTML;
+                    alertAudio.play();
+                    hideToggle('resumeQuest');
+                    status = 'work';
                 }
                     console.log('******');
             }
@@ -326,6 +300,29 @@ buttons.forEach((button) => {
 });
 
 function clockTime() {
+
+    let month = new Array(12);
+        month[0] = "January";
+        month[1] = "February";
+        month[2] = "March";
+        month[3] = "April";
+        month[4] = "May";
+        month[5] = "June";
+        month[6] = "July";
+        month[7] = "August";
+        month[8] = "September";
+        month[9] = "October";
+        month[10] = "November";
+        month[11] = "December";
+
+    let weekday = new Array(7);
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
     setInterval(function () {
 
         let now = new Date();

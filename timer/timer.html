@@ -18,8 +18,8 @@
         </div>
 
 
-        <div id="timerContain">
-            <div id="timer">
+        <div id="timerContain" >
+            <div id="timer" class="panel">
                 <div class="session toggle">
                     <span class="button mediaButtons" id="sessionUp">  &#8593;  </span>
                     <span class="statusTitle">Session</span>
@@ -62,21 +62,21 @@
 
             </div>
 
-            <div id="lengthQuest" class="panel" hidden>
+            <div id="lengthQuest" class="panel hidden quest" >
                 <div>Please enter the <span id="theStatus"></span></div>
                 <input type="number" id="numberInput" name="numberInput">
 
                 <input type="button" id="lengthButton" data-key="" data-value="" value="Submit" class="button mediaButtons">
             </div>
             
-            <div id="breakQuest" class="panel" hidden>
+            <div id="breakQuest" class="panel hidden quest" >
                 <div>Would you like to take a break?</div>
                 <input type="button" id="yesBreak" value="Yes" data-value=0 class="button mediaButtons">
                 <input type="button" id="noBreak" value="Snooze 10 minutes" data-value=10 class="button mediaButtons">
     
             </div>
 
-            <div id="resumeQuest" class="panel" hidden>
+            <div id="resumeQuest" class="panel hidden quest" >
                 <div>Would you like to begin another <span id="resumeAmt"></span> minute working session?</div>
                 <input type="button" id="yesResume" value="Yes" data-value=0 class="button mediaButtons">
                 <input type="button" id="noResume" value="No" data-value=0 class="button mediaButtons">
