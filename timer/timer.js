@@ -6,7 +6,9 @@ let intervalTwenty;
 let mute = false;
 
 let alertAudio = new Audio('alert.wav');
-
+let hours;
+let minutes;
+let seconds;
 
 
 let month = new Array(12);
@@ -36,18 +38,10 @@ function buttonCheck(button) {
     let element = document.getElementById(button);
     switch (button) {
         case 'play':
-            buttonSwitch(element, 'pause');
-            setBackground('rgba(150,150,250, .3)');
-            if (!isPaused) {
-                startTimer(Number(document.getElementById('sessionOutput').innerHTML),'timeRemain');
-                if(document.getElementById('twenty').checked == true) {  //deal with 20/20/20
-                    startTwenty(20,'twentyRemain');
-
-                }
-            }
-            isPaused = false;
+            playButton();
             break;
         case 'pause':
+            element.setAttribute('title', 'Start the Timer(s)');
             buttonSwitch(element, 'play');
             isPaused = true;
             setBackground('rgba(150,150,150, .3)');
@@ -56,7 +50,6 @@ function buttonCheck(button) {
         case 'stop':
             stopAll();
             break;
-
         case 'sound':
             buttonSwitch(element, 'mute');
             audioOff();
@@ -85,15 +78,15 @@ function buttonCheck(button) {
         case 'breakOutput':
             captureNumber(button);
             document.getElementById('lengthButton').setAttribute('data-key',button);
-            
-            break
+            break;
         case 'lengthButton':
             submitButton(button, 'numberInput');
             hideToggle('timer', 'lengthQuest');
             break;
         case 'ff':
-            stopAll();
-            breakTime();
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
             buttonSwitch(document.getElementById('play'), 'pause');
             break;
         case 'yesBreak':
@@ -103,11 +96,50 @@ function buttonCheck(button) {
             break;
         case 'noBreak':
             audioOff();
+            buttonSwitch(document.getElementById('play'), 'pause');
             hideToggle('timer', 'breakQuest');
-            startTimer(10,'timeRemain');
+            startTimer(10,'timeRemain','work');
+            setBackground('rgba(150,150,250, .3)');
+            break;
+        case 'yesResume':
+            hideToggle('timer', 'breakQuest');
             
+            audioOff();
+            playButton();
+            break;
+        case 'noResume':
+            hideToggle('timer', 'breakQuest');
+            audioOff();
             break;
     }
+}
+
+function playButton() {
+    document.getElementById('play').setAttribute('title', 'Pause the Timer(s)'); 
+    buttonSwitch(document.getElementById('play'), 'pause');
+    let status;
+    if(whatPaused == undefined || whatPaused == 'Working Session') {
+        setBackground('rgba(150,150,250, .3)');
+        status = 'work';
+    } else {
+        setBackground('rgba(150,250,150, .3)');
+        let status = 'break'
+    }
+    
+    if (!isPaused) {
+        startTimer(Number(document.getElementById('sessionOutput').innerHTML),'timeRemain',status);
+        if(document.getElementById('twenty').checked == true) {  //deal with 20/20/20
+            startTwenty(20,'twentyRemain');
+
+        }
+    }
+    isPaused = false;
+    whatPaused = undefined;
+
+}
+
+function pauseAll() {
+    
 }
 
 function audioOff() {
@@ -132,28 +164,32 @@ function displayStatus(status) {
 }
 
 
-function breakTime(status) {
+function breakTime() {
+    stopAll();
     setBackground('rgba(150,250,150, .3)');
-    startTimer(Number(document.getElementById('breakOutput').innerHTML),'timeRemain',true);
+    startTimer(Number(document.getElementById('breakOutput').innerHTML),'timeRemain','break');
     displayStatus('Breaktime');
     buttonSwitch(document.getElementById('play'), 'pause');
-    whatPaused = 'break';
 }
 
 function submitButton(button, input) {
     let key = document.getElementById(button).dataset.key;
     let value = document.getElementById(input).value;
     document.getElementById(key).innerHTML = value;
+
 }
 
 function captureNumber(button) {
+    let element = document.getElementById('numberInput');
+    document.getElementById('numberInput').value = '';
     hideToggle('timer', 'lengthQuest');
-    let status = (button).substring(0, button.length-6);
-    document.getElementById('theStatus').innerHTML = status + ' duration.';
-    document.getElementById('numberInput').focus();
+    let buttonStatus = (button).substring(0, button.length-6);
+    element.innerHTML = buttonStatus + ' duration.';
     let current = Number(document.getElementById(button).innerHTML);
-    document.getElementById('numberInput').setAttribute('value', current);
-    document.getElementById('numberInput').select();
+    element.setAttribute('value', current);
+    element.value = current;
+    element.select();
+    element.focus();
 }
 
 function hideToggle() {
@@ -192,17 +228,17 @@ function startTwenty() {
 }
 
 
-function startTimer(totalTime, location, breakTest) {  
-    let hours = Math.floor(totalTime / 60); 
-    let minutes = (totalTime - (hours * 60));
-    let seconds = 0;
-
-    
+function startTimer(totalTime, location, status) {  
+    hours = Math.floor(totalTime / 60); 
+    minutes = (totalTime - (hours * 60));
+    seconds = 0;
     document.getElementById(location).innerHTML =
         ('0' + hours.toString()).slice(-2) + ':' +
         ('0' + minutes.toString()).slice(-2) + ':' +
         ('0' + seconds.toString()).slice(-2);
 
+
+    console.log('status: ' + status);
     displayStatus('Working Session');
     interval = setInterval(function () {
 
@@ -214,21 +250,25 @@ function startTimer(totalTime, location, breakTest) {
                     hours > 0 ? (hours -= 1, minutes = 59, seconds = 59) : 0;
 
             if (seconds == 0 && minutes == 0 && hours == 0) {  //ask if they want to start break
-                //clearInterval(interval);
-                //breakTimer();
-                stopAll();
                 clearInterval(interval);
-                if(mute == false) {
-                    alertAudio.addEventListener('ended', function() {
-                        this.currentTime = 0;
-                        this.play();
+                setBackground('rgba(150,150,150, .3)');
+                status == "Breaktime" ? console.log('should go to resumeQuest'): console.log('should go to breakQuest');
 
-                    },false);
+                if(status == 'break') {
+                    document.getElementById('resumeAmt').innerHTML = document.getElementById('sessionOutput').innerHTML;
                     alertAudio.play();
-                }
-                if(breakTest != true && location == 'timeRemain') {
+                    hideToggle('resumeQuest', 'timer');
+                } else {
+                    if(mute == false) {
+                        alertAudio.addEventListener('ended', function() {
+                            this.currentTime = 0;
+                            this.play();
+    
+                        },false);
+                        alertAudio.play();
+                    }
                     hideToggle('timer', 'breakQuest');
-                } 
+                }
             }
 
             document.getElementById(location).innerHTML =
@@ -236,7 +276,7 @@ function startTimer(totalTime, location, breakTest) {
                 ('0' + minutes.toString()).slice(-2) + ':' +
                 ('0' + seconds.toString()).slice(-2);
         }
-    }, 1000)
+    }, 1)
 }
 
 

@@ -39,12 +39,12 @@
                 
                 
                 <div id="timeRemain">00:00:00</div>
-                <div id="status"> </div>
+                <div id="status"></div>
                 <ul>
-                    <li><img id="play" class="mediaButtons button" src="play.png" alt="play/pause" title="Start the Timer."></li>
+                    <li><img id="play" class="mediaButtons button" src="play.png" alt="play/pause" title="Start the Timer(s)."></li>
                     <li><img id="stop" class="mediaButtons button" src="stop.png" alt="stop" title="Stop reset timer."></li> 
                     <li><img id="ff" class="mediaButtons button" src="ff.png" alt="ff" title="Skip to break" data-value=0 data-key></li>
-                    <li><img id="sound" class="mediaButtons button" src="sound.png" alt="sound" title="Toggle mute"></li> 
+                    <li><img id="sound" class="mediaButtons button" src="sound.png" alt="sound" title="Toggle Sound/Mute"></li> 
 
                 </ul>
 
@@ -73,6 +73,13 @@
                 <div>Would you like to take a break?</div>
                 <input type="button" id="yesBreak" value="Yes" data-value=0 class="button mediaButtons">
                 <input type="button" id="noBreak" value="Snooze 10 minutes" data-value=10 class="button mediaButtons">
+    
+            </div>
+
+            <div id="resumeQuest" class="panel" hidden>
+                <div>Would you like to begin another <span id="resumeAmt"></span> minute working session?</div>
+                <input type="button" id="yesResume" value="Yes" data-value=0 class="button mediaButtons">
+                <input type="button" id="noResume" value="No" data-value=0 class="button mediaButtons">
     
             </div>
         </div>        
