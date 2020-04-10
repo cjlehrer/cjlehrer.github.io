@@ -4,6 +4,8 @@ let whatPaused;
 let interval;
 let intervalTwenty;
 let mute = false;
+let playTitle = "Start the Timer(s)";
+let pauseTitle = "Pause the Timer(s)";
 
 let alertAudio = new Audio('alert.wav');
 let hours;
@@ -41,11 +43,7 @@ function buttonCheck(button) {
             playButton();
             break;
         case 'pause':
-            element.setAttribute('title', 'Start the Timer(s)');
-            buttonSwitch(element, 'play');
-            isPaused = true;
-            setBackground('rgba(150,150,150, .3)');
-            whatPaused = document.getElementById('status').innerHTML;
+            pauseTimer();
             break;
         case 'stop':
             stopAll();
@@ -88,6 +86,7 @@ function buttonCheck(button) {
             minutes = 0;
             hours = 0;
             buttonSwitch(document.getElementById('play'), 'pause');
+            isPaused = false;
             break;
         case 'yesBreak':
             hideToggle('timer', 'breakQuest');
@@ -102,12 +101,14 @@ function buttonCheck(button) {
             setBackground('rgba(150,150,250, .3)');
             break;
         case 'yesResume':
+            stopAll();
             hideToggle('timer', 'breakQuest');
-            
+            whatPaused = undefined;
             audioOff();
             playButton();
             break;
         case 'noResume':
+            stopAll();
             hideToggle('timer', 'breakQuest');
             audioOff();
             break;
@@ -115,17 +116,19 @@ function buttonCheck(button) {
 }
 
 function playButton() {
-    document.getElementById('play').setAttribute('title', 'Pause the Timer(s)'); 
-    buttonSwitch(document.getElementById('play'), 'pause');
+    if (document.getElementById('play')) {
+        buttonSwitch(document.getElementById('play'), 'pause', pauseTitle);
+    }
+
     let status;
     if(whatPaused == undefined || whatPaused == 'Working Session') {
         setBackground('rgba(150,150,250, .3)');
         status = 'work';
     } else {
         setBackground('rgba(150,250,150, .3)');
-        let status = 'break'
+        status = 'break'
     }
-    
+    console.log('Status at playButton:' + status);
     if (!isPaused) {
         startTimer(Number(document.getElementById('sessionOutput').innerHTML),'timeRemain',status);
         if(document.getElementById('twenty').checked == true) {  //deal with 20/20/20
@@ -138,8 +141,13 @@ function playButton() {
 
 }
 
-function pauseAll() {
-    
+function pauseTimer() {
+    if (document.getElementById('pause')) {
+        buttonSwitch(document.getElementById('pause'), 'play',playTitle);
+    }
+    isPaused = true;
+    setBackground('rgba(150,150,150, .3)');
+    whatPaused = document.getElementById('status').innerHTML;
 }
 
 function audioOff() {
@@ -167,6 +175,7 @@ function displayStatus(status) {
 function breakTime() {
     stopAll();
     setBackground('rgba(150,250,150, .3)');
+    playButton();
     startTimer(Number(document.getElementById('breakOutput').innerHTML),'timeRemain','break');
     displayStatus('Breaktime');
     buttonSwitch(document.getElementById('play'), 'pause');
@@ -204,6 +213,7 @@ function startTwenty() {
     let minutesTwenty = 20;
     let secondsTwenty = 0;
 
+    
     intervalTwenty = setInterval(function () {
 
         if (!isPaused) {
@@ -237,8 +247,6 @@ function startTimer(totalTime, location, status) {
         ('0' + minutes.toString()).slice(-2) + ':' +
         ('0' + seconds.toString()).slice(-2);
 
-
-    console.log('status: ' + status);
     displayStatus('Working Session');
     interval = setInterval(function () {
 
@@ -251,13 +259,15 @@ function startTimer(totalTime, location, status) {
 
             if (seconds == 0 && minutes == 0 && hours == 0) {  //ask if they want to start break
                 clearInterval(interval);
+                pauseTimer();
                 setBackground('rgba(150,150,150, .3)');
-                status == "Breaktime" ? console.log('should go to resumeQuest'): console.log('should go to breakQuest');
-
+                //status == 'break' ? console.log('should go to resumeQuest'): console.log('should go to breakQuest');
+                console.log('status at startTimer:' + status);
                 if(status == 'break') {
                     document.getElementById('resumeAmt').innerHTML = document.getElementById('sessionOutput').innerHTML;
                     alertAudio.play();
                     hideToggle('resumeQuest', 'timer');
+
                 } else {
                     if(mute == false) {
                         alertAudio.addEventListener('ended', function() {
@@ -268,7 +278,9 @@ function startTimer(totalTime, location, status) {
                         alertAudio.play();
                     }
                     hideToggle('timer', 'breakQuest');
+
                 }
+                    console.log('******');
             }
 
             document.getElementById(location).innerHTML =
@@ -291,10 +303,11 @@ function setBackground(color) {
     document.getElementById("timerContain").style.backgroundColor = color;
 }
 
-function buttonSwitch(element, nextButton) {
+function buttonSwitch(element, nextButton, title) {
     if (element !== null) {
         element.src = nextButton + '.png';
         element.setAttribute('id', nextButton);
+        element.setAttribute('title', title);
     }
 }
 
