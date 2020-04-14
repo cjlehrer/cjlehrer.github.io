@@ -65,12 +65,13 @@ function buttonCheck(button) {
             if (!playCheck) {
                 buttonSwitch(document.getElementById('play'), 'pause');
             }
+            
+
             pauseTimer();
             setBackground('rgba(150,150,150, .3)');
             seconds = 0;
             minutes = 0;
             hours = 0;
-            timerClose()
             isPaused = false;
             break;
         case 'yesBreak':
@@ -158,17 +159,20 @@ function displayStatus(dispStatus) {
 function submitButton(button) {
     let key = document.getElementById('theStatus').innerHTML + 'Output';
     let value = document.getElementById('numberInput').value;
+    if (value.includes)
     if(value != '' && value > 0){
         document.getElementById(key).innerHTML = +value;
         document.getElementById('error').style.visibility = 'hidden';
         hideToggle('timer');
+        value < 20 ? 
+            (document.getElementById('twenty').checked = false, document.getElementById('theForm').hidden = true): 
+            (document.getElementById('twenty').checked = true, document.getElementById('theForm').hidden = false);
     } else {
         document.getElementById('error').style.visibility = 'visible';
     }
-
 }
 
-function captureNumber(button) {  //this is a problem.
+function captureNumber(button) { 
     let element = document.getElementById('numberInput');
     document.getElementById('theStatus').innerHTML = (button).substring(0, button.length-6); 
     element.value = document.getElementById(button).innerHTML;
@@ -179,7 +183,7 @@ function captureNumber(button) {  //this is a problem.
 }
 
 
-function hideToggle(show) {  
+function hideToggle(show) {  //this is a problem.  Works if the CSS transitions are gone
     const panels = document.querySelectorAll('.panel')
     panels.forEach(panel => {
         panel.id == show ? 
@@ -188,7 +192,17 @@ function hideToggle(show) {
     });
 }
 
+/*
 
+function hideToggle(show) {   //duplicate not working
+    console.log(show);
+    const panels = document.querySelectorAll('.panel')
+    panels.forEach(panel => {
+        document.getElementById(panel.id).classList.add('hidden');
+    });
+    document.getElementById('breakQuest').classList.remove('hidden');
+}
+*/
 
 function startTwenty() {
     let minutesTwenty = 20;
@@ -236,7 +250,23 @@ function startTimer(totalTime, location) {
                 clearInterval(interval);
                 pauseTimer();
                 setBackground('rgba(150,150,150, .3)');
-                timerClose();
+                if(status == 'work') {
+                    if(mute == false) {
+                        alertAudio.addEventListener('ended', function() {
+                            this.currentTime = 0;
+                            this.play();
+            
+                        },false);
+                        alertAudio.play();
+                    }
+                    hideToggle('breakQuest');
+                    status = 'break';
+                } else {
+                    document.getElementById('resumeAmt').innerHTML = document.getElementById('sessionOutput').innerHTML;
+                    alertAudio.play();
+                    hideToggle('resumeQuest');
+                    status = 'work';
+                }
             }
 
             document.getElementById(location).innerHTML =
@@ -244,28 +274,9 @@ function startTimer(totalTime, location) {
                 ('0' + minutes.toString()).slice(-2) + ':' +
                 ('0' + seconds.toString()).slice(-2);
         }
-    }, 1000)
+    }, 1)
 }
 
-function timerClose() {
-    if(status == 'work') {
-        if(mute == false) {
-            alertAudio.addEventListener('ended', function() {
-                this.currentTime = 0;
-                this.play();
-
-            },false);
-            alertAudio.play();
-        }
-        hideToggle('breakQuest');
-        status = 'break';
-    } else {
-        document.getElementById('resumeAmt').innerHTML = document.getElementById('sessionOutput').innerHTML;
-        alertAudio.play();
-        hideToggle('resumeQuest');
-        status = 'work';
-    }
-} 
 
 
 
