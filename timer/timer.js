@@ -159,7 +159,7 @@ function submitButton(button) {
     let key = document.getElementById('theStatus').innerHTML + 'Output';
     let value = document.getElementById('numberInput').value;
     if(value != '' && value > 0){
-        document.getElementById(key).innerHTML = value;
+        document.getElementById(key).innerHTML = +value;
         document.getElementById('error').style.visibility = 'hidden';
         hideToggle('timer');
     } else {
