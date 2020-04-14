@@ -57,14 +57,20 @@ function buttonCheck(button) {
             captureNumber(button);
             break;
         case 'lengthButton':
-            submitButton(button, 'numberInput');
-            hideToggle('timer');
+            submitButton(button);
+            
             break;
         case 'ff':
+            let playCheck = document.getElementById('play');
+            if (!playCheck) {
+                buttonSwitch(document.getElementById('play'), 'pause');
+            }
+            pauseTimer();
+            setBackground('rgba(150,150,150, .3)');
             seconds = 0;
             minutes = 0;
             hours = 0;
-            buttonSwitch(document.getElementById('play'), 'pause');
+            timerClose()
             isPaused = false;
             break;
         case 'yesBreak':
@@ -107,7 +113,6 @@ function playButton() {
         setBackground('rgba(150,250,150, .3)');
         timer = Number(document.getElementById('breakOutput').innerHTML)
     }
-    console.log('Status at playButton:' + status);
     if (!isPaused) {
         startTimer(timer,'timeRemain');
         if(document.getElementById('twenty').checked == true) {  //deal with 20/20/20
@@ -150,26 +155,29 @@ function displayStatus(dispStatus) {
     document.getElementById('status').innerHTML = dispStatus;
 }
 
-function submitButton(button, input) {
-    let key = document.getElementById(button).dataset.key;
-    let value = document.getElementById(input).value;
-    document.getElementById(key).innerHTML = value;
+function submitButton(button) {
+    let key = document.getElementById('theStatus').innerHTML + 'Output';
+    let value = document.getElementById('numberInput').value;
+    if(value != '' && value > 0){
+        document.getElementById(key).innerHTML = value;
+        document.getElementById('error').style.visibility = 'hidden';
+        hideToggle('timer');
+    } else {
+        document.getElementById('error').style.visibility = 'visible';
+    }
 
 }
 
 function captureNumber(button) {  //this is a problem.
-    let thisValue = document.getElementById(button).innerHTML;
-    document.getElementById('numberInput').setAttribute('value',thisValue);
-    document.getElementById('lengthButton').setAttribute('data-key', button);
-    let element = document.getElementById('numberInput')
+    let element = document.getElementById('numberInput');
+    document.getElementById('theStatus').innerHTML = (button).substring(0, button.length-6); 
+    element.value = document.getElementById(button).innerHTML;
     hideToggle('lengthQuest');
-    let buttonStatus = (button).substring(0, button.length-6);
-    document.getElementById('theStatus').innerHTML = buttonStatus + ' duration.';
-    let current = Number(document.getElementById(button).innerHTML);
-    element.setAttribute('value', current);
-    element.select();
     element.focus();
+    element.select();
+
 }
+
 
 function hideToggle(show) {  
     const panels = document.querySelectorAll('.panel')
@@ -182,24 +190,17 @@ function hideToggle(show) {
 
 
 
-
 function startTwenty() {
     let minutesTwenty = 20;
     let secondsTwenty = 0;
-
-    
     intervalTwenty = setInterval(function () {
-
         if (!isPaused) {
             document.getElementById('twentyRemain').innerHTML = secondsTwenty;
-
             secondsTwenty > 0 ? secondsTwenty -= 1: 
                 minutesTwenty > 0 ? (minutesTwenty -= 1, secondsTwenty = 59) : 0;
-
             if (secondsTwenty == 0 && minutesTwenty == 0) {  //ask if they want to start break
                 clearInterval(intervalTwenty);
                 startTwenty();
-
                 if(mute == false) {
                     alertAudio.play();
                 }
@@ -235,26 +236,7 @@ function startTimer(totalTime, location) {
                 clearInterval(interval);
                 pauseTimer();
                 setBackground('rgba(150,150,150, .3)');
-                //status == 'break' ? console.log('should go to resumeQuest'): console.log('should go to breakQuest');
-                console.log('status at startTimer: ' + status + ' ' + status=='work');
-                if(status == 'work') {
-                    if(mute == false) {
-                        alertAudio.addEventListener('ended', function() {
-                            this.currentTime = 0;
-                            this.play();
-    
-                        },false);
-                        alertAudio.play();
-                    }
-                    hideToggle('breakQuest');
-                    status = 'break';
-                } else {
-                    document.getElementById('resumeAmt').innerHTML = document.getElementById('sessionOutput').innerHTML;
-                    alertAudio.play();
-                    hideToggle('resumeQuest');
-                    status = 'work';
-                }
-                    console.log('******');
+                timerClose();
             }
 
             document.getElementById(location).innerHTML =
@@ -262,8 +244,28 @@ function startTimer(totalTime, location) {
                 ('0' + minutes.toString()).slice(-2) + ':' +
                 ('0' + seconds.toString()).slice(-2);
         }
-    }, 1)
+    }, 1000)
 }
+
+function timerClose() {
+    if(status == 'work') {
+        if(mute == false) {
+            alertAudio.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+
+            },false);
+            alertAudio.play();
+        }
+        hideToggle('breakQuest');
+        status = 'break';
+    } else {
+        document.getElementById('resumeAmt').innerHTML = document.getElementById('sessionOutput').innerHTML;
+        alertAudio.play();
+        hideToggle('resumeQuest');
+        status = 'work';
+    }
+} 
 
 
 

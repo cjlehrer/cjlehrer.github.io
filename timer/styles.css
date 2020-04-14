@@ -171,13 +171,18 @@ label {
   float: left;
   text-align: center;
   font-size: 40px;
+  
 }
 
 #twentyRemain {
   float: right;
 }
 
-
+#error {
+  color: rgb(250,150,150);
+  font-size: 18px;
+  visibility: hidden;
+}
 
 ul {
   clear:both;
