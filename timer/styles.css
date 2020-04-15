@@ -7,8 +7,6 @@ body {
     min-height: 400px;
 }
 
-
-
 #clock {    
     width: 100%;
     min-width: 320px;
@@ -85,7 +83,7 @@ body {
   clear: both;
 }
 
-.session, #sessionOutput{
+.session, #sessionOutput, .break, #breakOutput {
     text-align: center;
 }
 
@@ -103,23 +101,7 @@ body {
   margin-right: 15%;
 }
 
-.break, #breakOutput {
-    text-align: center;
 
-
-}
-
-#sessionOutput, #breakOutput{
-  
-}
-
-#sessionOutput {
-
-}
-
-#breakOutput {
-
-}
 
 .button:hover {
     color: #6b3;
@@ -186,7 +168,6 @@ label {
 
 ul {
   clear:both;
-
 }
 
 ul li {

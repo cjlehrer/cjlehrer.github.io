@@ -156,11 +156,11 @@ function displayStatus(dispStatus) {
     document.getElementById('status').innerHTML = dispStatus;
 }
 
-function submitButton(button) {
+function submitButton(button) {  
     let key = document.getElementById('theStatus').innerHTML + 'Output';
     let value = document.getElementById('numberInput').value;
     if (value.includes)
-    if(value != '' && value > 0){
+    if(value != '' && value > 0 && Number.isInteger(Number(value)) == true){
         document.getElementById(key).innerHTML = +value;
         document.getElementById('error').style.visibility = 'hidden';
         hideToggle('timer');
@@ -195,7 +195,6 @@ function hideToggle(show) {  //this is a problem.  Works if the CSS transitions 
 /*
 
 function hideToggle(show) {   //duplicate not working
-    console.log(show);
     const panels = document.querySelectorAll('.panel')
     panels.forEach(panel => {
         document.getElementById(panel.id).classList.add('hidden');
