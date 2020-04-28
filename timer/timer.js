@@ -299,7 +299,7 @@ function buttonSwitch(element, nextButton, title) {
 
 function twentyToggle() {
     document.getElementById('twenty').checked == true ? 
-        document.getElementById('twentyRemain').innerHTML = '00:20:00': 
+        document.getElementById('twentyRemain').innerHTML = '20:00': 
         document.getElementById('twentyRemain').innerHTML = '';
     }
 
