@@ -4,58 +4,50 @@ body {
     background: url("slate.jpg");
     background-repeat: no-repeat;
     background-size: 100vw 100vh;
-    min-height: 400px;
+
+    color:#D3D3D3;
+    text-shadow: 4px 4px 8px #222;
+    text-align: center;
 }
 
 #clock {    
-    width: 100%;
-    min-width: 320px;
-    min-height: 80px;
+  padding: 5px 0px;
     color:#D3D3D3;
     font-size: 36px;
-    margin: 2vh auto;
-    font: inherit;
+    height: 80px;
     text-align: center;
     text-shadow: 4px 4px 8px #222;
     font-family: 'Roboto Condensed', sans-serif;
-    float:left;
+
 }
 
 #time {
-  width: 100%;
-  min-height: 38px;
+
   color:#DDD;
   font-size: 36px;
 }
 
 #day, #date {
   font-size: 24px;
-
   color: #CFCFCF;
 }
 
-#time, #day, #date {
-  text-shadow: 4px 4px 8px #222;
-  text-align: center;
-
+.panel {
+  position: absolute;
+  top: 80px;
+  left: 0px;
 }
 
-#dateDiv {
-  margin: 0 1% 1% 1%;
-  min-height: 26px;
-}
 
 .hidden {
-  display: none;
+  opacity: 0;
 }
 
+
 #timerContain {
-    min-width: 320px;
-    height: 363px;
-    width: 100%;
-    display: block;
-    max-width: 640px;
-  
+    width: 320px;
+    height: 480px;
+    position: relative;
     clear: both;
     margin: 0 auto;
     overflow: hidden;
@@ -70,38 +62,27 @@ body {
 }
 
 .toggle {
-    margin-top: 2vh; 
-
-}
-
-.toggle {
     text-align: center;
-}
-
-.output {
-  text-align: center;
-  clear: both;
 }
 
 .session, #sessionOutput, .break, #breakOutput {
     text-align: center;
+    width: auto;
 }
 
 #status {
     height: 28px;
+    text-align: center;
+}
+
+.session, .break  {
+
+  width: 100%;
 }
 
 .session {
-  float: left;
-  margin-left: 15%;
+  margin-bottom: 5px;
 }
-
-.break {
-  float: right;
-  margin-right: 15%;
-}
-
-
 
 .button:hover {
     color: #6b3;
@@ -111,48 +92,24 @@ body {
     color: #222;
 }
 
-#timeRemain {
-  
-
-}
-
-
-
-
-.break,#breakOutput, .break a {
-   
-}
-
-.session, #sessionOutput, .session a {
-
-}
-
 
 #timeRemain {
-    font-size: 96px;
+    font-size: 76px;
     clear: both;
     padding: 10px;
-    
+    text-align: center;
+    width: 100%;
 }
 
-form {
-  clear: both;
-  float: left;
-  margin: 20px 0 7px 20px !important;
-  
-}
-
-#theForm {
-  clear: both;
+#theForm, #clock {
   background-color: rgba(0,0,0, .3);
-  overflow: hidden;
 }
 
 
 label {
   float: left;
   text-align: center;
-  font-size: 40px;
+
   
 }
 
@@ -167,7 +124,7 @@ label {
 }
 
 ul {
-  clear:both;
+  width: 100%;
 }
 
 ul li {
@@ -176,7 +133,6 @@ ul li {
   margin-bottom: 10px;
   height: 75px;
   overflow: hidden;
-
 }
 
 
@@ -185,78 +141,6 @@ ul li img:hover {
   top: -75px;
   cursor: pointer;
 }
-
-
-/* ----  Checkbox  ----  */
-
-/* The container */
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 26px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Hide the browser's default checkbox */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-/* Create a custom checkbox */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #FAFAFA;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #FAFAFA;
-}
-
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: #FAFAFA;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid #222;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
 
 .quest {
   margin: 100px;
@@ -268,15 +152,10 @@ ul li img:hover {
   text-align: right;
 }
 
-#numberInput {
-  
-}
+
 
 #lengthButton:hover {
   color: #222;
   background-color: #999;
 }
 
-#lengthButton {
-
-}
