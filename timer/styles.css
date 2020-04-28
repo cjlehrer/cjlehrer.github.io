@@ -4,10 +4,10 @@ body {
     background: url("slate.jpg");
     background-repeat: no-repeat;
     background-size: 100vw 100vh;
-
     color:#D3D3D3;
     text-shadow: 4px 4px 8px #222;
     text-align: center;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 #clock {    
@@ -17,14 +17,14 @@ body {
     height: 80px;
     text-align: center;
     text-shadow: 4px 4px 8px #222;
-    font-family: 'Roboto Condensed', sans-serif;
 
+    width: 100%;
 }
 
 #time {
-
   color:#DDD;
   font-size: 36px;
+
 }
 
 #day, #date {
@@ -34,8 +34,10 @@ body {
 
 .panel {
   position: absolute;
-  top: 80px;
+  top: 100px;
   left: 0px;
+  width: 100%;
+
 }
 
 
@@ -55,6 +57,7 @@ body {
     border-radius: 8px;
     background-color: rgba(150,150,150, .3);
     box-shadow: 0vh 0vw 3vw #222;
+    
 }
 
 .button {
@@ -68,6 +71,7 @@ body {
 .session, #sessionOutput, .break, #breakOutput {
     text-align: center;
     width: auto;
+    
 }
 
 #status {
@@ -95,16 +99,22 @@ body {
 
 #timeRemain {
     font-size: 76px;
-    clear: both;
-    padding: 10px;
+
     text-align: center;
     width: 100%;
 }
 
-#theForm, #clock {
+#clock {
   background-color: rgba(0,0,0, .3);
+
 }
 
+
+
+#theForm {
+  height: auto;
+  padding: 10px;
+}
 
 label {
   float: left;
@@ -115,6 +125,7 @@ label {
 
 #twentyRemain {
   float: right;
+  
 }
 
 #error {
@@ -133,6 +144,7 @@ ul li {
   margin-bottom: 10px;
   height: 75px;
   overflow: hidden;
+  
 }
 
 
